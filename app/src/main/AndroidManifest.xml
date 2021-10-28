@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,14 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".usermodel.EditArticleActivity"></activity>
-        <activity android:name=".usermodel.ArticleDetailActivity" />
-        <activity android:name=".usermodel.ArticleActivity" />
-        <activity android:name=".usermodel.UserFavoriteActivity" />
-        <activity android:name=".usermodel.UserDetailActivity" />
-        <activity android:name=".usermodel.RegisterActivity" />
-        <activity android:name=".usermodel.LoginActivity" />
-        <activity android:name=".WebActivity" />
+        <activity android:name=".ui.other.EditArticleActivity"></activity>
+        <activity android:name=".ui.other.ArticleDetailActivity" />
+        <activity android:name=".ui.other.ArticleActivity" />
+        <activity android:name=".ui.news.collection.UserFavoriteActivity" />
+        <activity android:name=".ui.user.UserDetailActivity" />
+        <activity android:name=".ui.user.RegisterActivity" />
+        <activity android:name=".ui.user.LoginActivity" />
+        <activity android:name=".ui.news.WebActivity" />
+        <activity android:name=".ui.other.OtherSitesActivity"/>
+        <activity android:name=".ui.other.TopicActivity"/>
+        <activity android:name=".ui.other.TopicDetailActivity"/>
         <!--
             使用singleTask会在返回栈中检查是否存在该活动实例，
         若存在则直接使用该实例，并把这个活动之上的所有活动统统出栈，

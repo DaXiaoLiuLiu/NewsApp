@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/topic_join"
+        android:title="加入话题"
+        android:icon="@drawable/add3"
+        app:showAsAction="always"
+        android:orderInCategory="10"/>
+</menu>

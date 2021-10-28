@@ -1,14 +1,19 @@
 package com.example.viewnews;
+/*
+ * @Author Lxf
+ * @Date 2021/9/13 16:35
+ * @Description 登录功能部分准备使用mmkv存储，而不是使用SQL-Lite
+ * 需要废弃的layout：item_layout01 03 news_list
+ *
+ * @Since version-1.0
+ */
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,33 +25,27 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.viewnews.tools.ActivityCollector;
-import com.example.viewnews.tools.BaseActivity;
-import com.example.viewnews.tools.DataCleanManager;
-import com.example.viewnews.usermodel.ArticleActivity;
-import com.example.viewnews.usermodel.LoginActivity;
-import com.example.viewnews.usermodel.UserDetailActivity;
-import com.example.viewnews.usermodel.UserFavoriteActivity;
-import com.example.viewnews.usermodel.UserInfo;
+import com.example.viewnews.ui.GlideHelper;
+import com.example.viewnews.ui.news.NewsPageAdapter;
+import com.example.viewnews.ui.other.OtherSitesActivity;
+import com.example.viewnews.ui.other.TopicActivity;
+import com.example.viewnews.ui.user.LoginActivity;
+import com.example.viewnews.ui.user.UserDetailActivity;
+import com.example.viewnews.ui.news.collection.UserFavoriteActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.tencent.mmkv.MMKV;
 
-import org.litepal.LitePal;
-import org.litepal.tablemanager.Connector;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +60,11 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+
+    private ViewPager2 viewPager2;
+
     private List<String> list;
+
 
     private TextView userNickName, userSignature;
 
@@ -78,10 +80,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //初始化MMkv
+        MMKV.initialize(this);
+
         toolbar = findViewById(R.id.toolbar);
 
         //注意：只需第一次创建或升级本地数据库，第二次运行就注释掉
-        Connector.getDatabase();
         //Toast.makeText(MainActivity.this, "创建数据库成功", Toast.LENGTH_LONG).show();
 
         //获取抽屉布局实例
@@ -97,7 +101,8 @@ public class MainActivity extends BaseActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        //viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager2 = (ViewPager2)findViewById(R.id.viewPager2);
 
         list = new ArrayList<>();
     }
@@ -106,6 +111,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+
         System.out.println("当前MainActivity活动又被加载onStart");
         //设置标题栏的logo
         //toolbar.setLogo(R.drawable.icon);
@@ -121,6 +128,7 @@ public class MainActivity extends BaseActivity {
             //设置Indicator来添加一个点击图标（默认图标是一个返回的箭头）
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
+
         //设置默认选中第一个
         navigationView.setCheckedItem(R.id.nav_edit);
         //设置菜单项的监听事件
@@ -130,53 +138,44 @@ public class MainActivity extends BaseActivity {
                 //逻辑页面处理
                 mDrawerLayout.closeDrawers();
                 switch (menuItem.getItemId()) {
-                    case R.id.nav_edit:
-                        //每个菜单项的点击事件，通过Intent实现点击item简单实现活动页面的跳转。
-                        if (!TextUtils.isEmpty(currentUserId)) {
-                            Intent editIntent = new Intent(MainActivity.this, UserDetailActivity.class);
-                            editIntent.putExtra("user_edit_id", currentUserId);
-                            startActivityForResult(editIntent, 3);
-                        } else {
-                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                            loginIntent.putExtra("loginStatus", "请先登录后才能操作！");
-                            startActivityForResult(loginIntent, 1);
-                        }
+                    case R.id.nav_edit://编辑资料
+
+                        Intent Intent = new Intent(MainActivity.this, UserDetailActivity.class);
+                        startActivity(Intent);
+
                         break;
-                    case R.id.nav_articles:
-                        // 我发布的文章
-                        if (!TextUtils.isEmpty(currentUserId)) {
-                            Intent editIntent = new Intent(MainActivity.this, ArticleActivity.class);
-                            editIntent.putExtra("user_article_id", currentUserId);
-                            startActivityForResult(editIntent, 6);
-                        } else {
-                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                            loginIntent.putExtra("loginStatus", "请先登录后才能操作！");
-                            startActivityForResult(loginIntent, 1);
-                        }
+                    case R.id.nav_articles://编辑文章
+
+                        Toast.makeText(MainActivity.this,"功能没做好捏!",Toast.LENGTH_LONG).show();
+/*                        Intent editIntent = new Intent(MainActivity.this, ArticleActivity.class);
+                        startActivity(editIntent);*/
                         break;
-                    case R.id.nav_favorite:
-                        if (!TextUtils.isEmpty(currentUserId)) {
-                            Intent loveIntent = new Intent(MainActivity.this, UserFavoriteActivity.class);
-                            loveIntent.putExtra("user_love_id", currentUserId);
-                            startActivity(loveIntent);
-                        } else {
-                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                            loginIntent.putExtra("loginStatus", "请先登录后才能操作！");
-                            startActivityForResult(loginIntent, 1);
-                        }
+                    case R.id.nav_favorite://文章收藏
+
+                        Intent loveIntent = new Intent(MainActivity.this, UserFavoriteActivity.class);
+                        startActivity(loveIntent);
                         break;
-                    case R.id.nav_clear_cache:
+                    case R.id.nav_clear_cache://清楚缓存
                         // 清除缓存
                         // Toast.makeText(MainActivity.this,"你点击了清除缓存，下步实现把",Toast.LENGTH_SHORT).show();
                         clearCacheData();
                         break;
-                    case R.id.nav_switch:
+                    case R.id.nav_switch://账号切换界面
                         // 切换账号
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         // 登录请求码是1
                         startActivityForResult(intent, 1);
                         break;
+                    case R.id.nav_other_sites://第三方跳转区
+                        Intent otherSitesIntent=new Intent(MainActivity.this, OtherSitesActivity.class);
+                        startActivity(otherSitesIntent);
+                        break;
+                    case R.id.nav_topic://自编辑文章区
+                        Intent topicIntent=new Intent(MainActivity.this, TopicActivity.class);
+                        startActivity(topicIntent);
+                        break;
                     default:
+                        break;
                 }
                 return true;
             }
@@ -200,149 +199,31 @@ public class MainActivity extends BaseActivity {
             具体讲解查看：https://blog.csdn.net/StrongerCoder/article/details/70158836
             https://blog.csdn.net/Mr_LiaBill/article/details/48749807
         */
-        viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager(), 1) {
-            //以下方法的使用可以查看：https://blog.csdn.net/fyq520521/article/details/80595684
-            //得到当前页的标题，也就是设置当前页面显示的标题是tabLayout对应标题
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return list.get(position);
-            }
 
-            //返回position位置关联的Fragment。
+        viewPager2.setOffscreenPageLimit(1);
+        viewPager2.setAdapter(new NewsPageAdapter(this,list));
+        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public Fragment getItem(int position) {
-                NewsFragment newsFragment = new NewsFragment();
-                //判断所选的标题，进行传值显示
-                //Bundle主要用于传递数据；它保存的数据，是以key-value(键值对)的形式存在的。
-                //详细讲解：https://blog.csdn.net/yiranruyuan/article/details/78049219
-                Bundle bundle = new Bundle();
-                if (list.get(position).equals("头条")) {
-                    bundle.putString("name", "top");
-                } else if (list.get(position).equals("社会")) {
-                    bundle.putString("name", "shehui");
-                } else if (list.get(position).equals("国内")) {
-                    bundle.putString("name", "guonei");
-                } else if (list.get(position).equals("国际")) {
-                    bundle.putString("name", "guoji");
-                } else if (list.get(position).equals("娱乐")) {
-                    bundle.putString("name", "yule");
-                } else if (list.get(position).equals("体育")) {
-                    bundle.putString("name", "tiyu");
-                } else if (list.get(position).equals("军事")) {
-                    bundle.putString("name", "junshi");
-                } else if (list.get(position).equals("科技")) {
-                    bundle.putString("name", "keji");
-                } else if (list.get(position).equals("财经")) {
-                    bundle.putString("name", "caijing");
-                } else if (list.get(position).equals("时尚")) {
-                    bundle.putString("name", "shishang");
-                }
-                //设置当前newsFragment的bundle
-                //具体讲解：https://www.jb51.net/article/102383.htm
-                newsFragment.setArguments(bundle);
-                return newsFragment;
+            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int i) {
+                Log.d("MainActivity","tab is " + list.get(i));
+                tab.setText(list.get(i));
             }
+        }).attach();
 
-            //创建指定位置的页面视图
-            @NonNull
-            @Override
-            public Object instantiateItem(@NonNull ViewGroup container, int position) {
-                NewsFragment newsFragment = (NewsFragment) super.instantiateItem(container, position);
-                return newsFragment;
-            }
-
-            //具体讲解：https://www.cnblogs.com/cheneasternsun/p/6017012.html，但是这样用比较浪费资源
-            @Override
-            public int getItemPosition(@NonNull Object object) {
-                return FragmentStatePagerAdapter.POSITION_NONE;
-            }
-
-            //返回当前有效视图的数量，这其实也就是将list和tab选项卡关联起来
-            @Override
-            public int getCount() {
-                return list.size();
-            }
-        });
-        //将TabLayout与ViewPager关联显示
-        tabLayout.setupWithViewPager(viewPager);
-        // 加载上次登录的账号，起到记住会话的功能
-        String inputText = load();
-        if (!TextUtils.isEmpty(inputText) && TextUtils.isEmpty(currentUserId)) {
-            currentUserId = inputText;
-        }
-        View v = navigationView.getHeaderView(0);
-        userNickName = v.findViewById(R.id.text_nickname);
-        userSignature = v.findViewById(R.id.text_signature);
-        userAvatar = v.findViewById(R.id.icon_image);
-        if (!TextUtils.isEmpty(currentUserId)) {
-            List<UserInfo> userInfos = LitePal.where("userAccount = ?", currentUserId).find(UserInfo.class);
-            userNickName.setText(userInfos.get(0).getNickName());
-            userSignature.setText(userInfos.get(0).getUserSignature());
-            currentImagePath = userInfos.get(0).getImagePath();
-            System.out.println("主界面初始化数据：" + userInfos);
-            diplayImage(currentImagePath);
-        } else {
-            userNickName.setText("请先登录");
-            userSignature.setText("请先登录");
-            userAvatar.setImageResource(R.drawable.no_login_avatar);
-        }
     }
 
     // 解析、展示图片
     private void diplayImage(String imagePath) {
-        if (!TextUtils.isEmpty(imagePath)) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            userAvatar.setImageBitmap(bitmap);
+        if (!TextUtils.isEmpty(imagePath) && imagePath.length() != 0) {
+  
+            GlideHelper helper = new GlideHelper(getApplicationContext());
+            helper.setGilde(imagePath,userAvatar);
         } else {
-            userAvatar.setImageResource(R.drawable.no_login_avatar);
+            userAvatar.setImageResource(R.drawable.login_fail);
         }
     }
 
 
-    // 通过登录来接收值
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        View v = navigationView.getHeaderView(0);
-        userNickName = v.findViewById(R.id.text_nickname);
-        userSignature = v.findViewById(R.id.text_signature);
-
-        switch (requestCode) {
-            case 1: // 切换账号登录后来主界面
-                if (resultCode == RESULT_OK) {
-                    Toast.makeText(MainActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                    currentUserId = data.getStringExtra("userID");
-                    currentUserNickName = data.getStringExtra("userNick");
-                    currentSignature = data.getStringExtra("userSign");
-                    currentImagePath = data.getStringExtra("imagePath");
-                    Log.d(TAG, "当前用户的账号为：" + currentUserId);
-                    Log.d(TAG, "当前用户的昵称为：" + currentUserNickName);
-                    Log.d(TAG, "当前用户的个性签名为： " + currentSignature);
-                    Log.d(TAG, "当前用户的头像地址为: " + currentImagePath);
-                    userNickName.setText(currentUserNickName);
-                    userSignature.setText(currentSignature);
-                    diplayImage(currentImagePath);
-                }
-                break;
-            case 3: // 从个人信息返回来的数据，要更新导航栏中的数据，包括昵称，签名，图片路径
-                if (resultCode == RESULT_OK) {
-                    currentUserNickName = data.getStringExtra("nickName");
-                    currentSignature = data.getStringExtra("signature");
-                    currentImagePath = data.getStringExtra("imagePath");
-                    Log.d(TAG, "当前用户的昵称为：" + currentUserNickName);
-                    Log.d(TAG, "当前用户的个性签名为： " + currentSignature);
-                    Log.d(TAG, "当前用户的图片路径为： " + currentImagePath);
-                    System.out.println("当前用户的图片路径7777777为： " + currentImagePath);
-                    userNickName.setText(currentUserNickName);
-                    userSignature.setText(currentSignature);
-                    diplayImage(currentImagePath);
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
 
     public void clearCacheData() {
@@ -388,10 +269,29 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             //R.id.home修改导航按钮的点击事件为打开侧滑
-            case android.R.id.home:
+            case android.R.id.home://
                 //打开侧滑栏，注意要与xml中保持一致START
+                View v = navigationView.getHeaderView(0);
+                userNickName = v.findViewById(R.id.text_nickname);
+                userSignature = v.findViewById(R.id.text_signature);
+                userAvatar = v.findViewById(R.id.icon_image);
+                MMKV mmkv = MMKV.defaultMMKV();
+                currentUserId = mmkv.decodeString("name","");//获取当前账号id
+                if (!TextUtils.isEmpty(currentUserId)) {
+                    //List<UserInfo> userInfos = LitePal.where("userAccount = ?", currentUserId).find(UserInfo.class);
+                    userNickName.setText(mmkv.decodeString("NickName",""));
+                    userSignature.setText(mmkv.decodeString("Signature",""));
+                    currentImagePath = mmkv.decodeString("Url","");
+                    //System.out.println("主界面初始化数据：" + userInfos);
+                    diplayImage(currentImagePath);
+                } else {
+                    userNickName.setText("请先登录");
+                    userSignature.setText("请先登录");
+                    userAvatar.setImageResource(R.drawable.no_login_avatar);
+                }
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
+
             case R.id.userFeedback:
                 //填写用户反馈
                 new MaterialDialog.Builder(MainActivity.this)
@@ -409,6 +309,7 @@ public class MainActivity extends BaseActivity {
                         .negativeText("取消")
                         .show();
                 break;
+
             case R.id.userExit:
                 SweetAlertDialog mDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText("提示")
@@ -435,33 +336,5 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    // 加载数据
-    public String load() {
-        //读取我们之前存储到data文件中的账号，方便下次启动app时直接使用
-        FileInputStream in = null;
-        BufferedReader reader = null;
-        StringBuilder content = new StringBuilder();
-        try {
-            in = openFileInput("data");
-            System.out.println("是否读到文件内容" + in);
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return content.toString();
-    }
+
 }

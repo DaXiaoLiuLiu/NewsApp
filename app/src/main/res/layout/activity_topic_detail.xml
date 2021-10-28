@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:title="话题详情"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/topic_detail_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="595dp"
+            android:layout_marginTop="60dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:paddingBottom="10dp">
+
+            <EditText
+                android:id="@+id/topic_comment_field"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:hint="请发条友善的评论吧"/>
+            <Button
+                android:id="@+id/topic_comment_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/topic_comment_field"
+                android:layout_toRightOf="@+id/topic_comment_field"
+                android:text="提交"
+                android:background="@color/colorPrimary"
+                android:textSize="17dp"/>
+        </RelativeLayout>
+</FrameLayout>

@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usermodel.UserDetailActivity">
+    tools:context=".ui.user.UserDetailActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/userData_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:background="@color/colorPrimary"
-            app:titleTextColor="@color/colorWhite"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@color/colorWhite" />
         <!--
                 以水平方向为例，当layout_width都设置为match_parent时，
                 layout_weight比重值越大，占的比例越小；
@@ -27,31 +28,32 @@
         -->
         <LinearLayout
             android:id="@+id/lay_avatar"
-            android:orientation="horizontal"
-            android:background="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="头像"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                >
+                android:layout_weight="2">
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_avatar"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     android:layout_marginLeft="30dp"
-                    android:src="@mipmap/ic_launcher_foreground" />
+                    android:src="@drawable/login_news" />
             </LinearLayout>
 
         </LinearLayout>
@@ -59,15 +61,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorBlack"
-            />
+            android:background="@color/colorBlack" />
 
         <LinearLayout
             android:id="@+id/lay_nickname"
-            android:background="@color/colorWhite"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="match_parent"
@@ -85,28 +86,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center_vertical|center"
-                />
+                android:gravity="center_vertical|center" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorBlack"
-            />
+            android:background="@color/colorBlack" />
+
         <LinearLayout
             android:id="@+id/lay_sex"
-            android:orientation="horizontal"
-            android:background="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
+
 
             <TextView
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:background="#01000000"
                 android:gravity="center_vertical"
+                android:padding="10dp"
                 android:text="性别"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -116,30 +118,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center_vertical|center"
-                />
+                android:gravity="center_vertical|center" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorBlack"
-            />
+            android:background="@color/colorBlack" />
 
         <LinearLayout
             android:id="@+id/lay_birthday"
-            android:orientation="horizontal"
-            android:background="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
 
             <TextView
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="生日"
+                android:padding="10dp"
+                android:text="地区"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -148,30 +148,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center_vertical|center"
-                />
+                android:gravity="center_vertical|center" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorBlack"
-            />
+            android:background="@color/colorBlack" />
         <!--个人简介-->
 
         <LinearLayout
             android:id="@+id/lay_signature"
-            android:orientation="horizontal"
-            android:background="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
 
             <TextView
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
+                android:padding="10dp"
                 android:text="个性签名"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -182,10 +180,24 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical|center"
-                />
+                android:gravity="center_vertical|center" />
         </LinearLayout>
 
+
+        <Button
+            android:id="@+id/infoBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="200dp" />
+
+
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

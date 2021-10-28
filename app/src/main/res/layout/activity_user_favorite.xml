@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usermodel.UserFavoriteActivity">
+    tools:context=".ui.news.collection.UserFavoriteActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -18,11 +18,16 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-        <ListView
+<!--        <ListView
             android:id="@+id/favorite_newsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </ListView>
+        </ListView>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favorite_newsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 

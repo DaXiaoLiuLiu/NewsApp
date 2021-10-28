@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#eb423d</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
@@ -9,4 +9,23 @@
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#FFF</color>
     <color name="colorGray">#DCDCDC</color>
+    <color name="colorBlue">#0000ff</color>
+    <color name="colorSafe">#009933</color>
+
+    <!--偷来的颜色-->
+    <color name="tab_main_text_1">#aaa</color>
+    <color name="tab_main_text_2">#74b5f7</color>
+    <color name="tab_top_text_1">#aaaaaa</color>
+    <color name="tab_top_text_2">#eb413d</color>
+    <color name="tab_top2_text_1">#000</color>
+    <color name="tab_top2_text_2">#fff</color>
+    <color name="white">#fff</color>
+
+    <color name="tab_background">#f7f7f7</color>
+    <color name="tab_top_background">#eb423d</color>
+    <color name="fragment_background">#fafafa</color>
+    <color name="list_item_vote_color">#b2b2b2</color>
+    <color name="list_item_subtitle_color">#999999</color>
+    <color name="list_item_title_color">#242424</color>
+    <color name="gray_line_color">#e5e5e5</color>
 </resources>

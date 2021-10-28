@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:logo="@drawable/other_websites"
+        app:title="第三方网站" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/webSites_FengHuang"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:src="@mipmap/ifeng_logo"/>
+        <Button
+            android:id="@+id/webSites_FengHuang_button"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@color/colorWhite"
+            android:layout_toRightOf="@+id/webSites_FengHuang"
+            android:text="凤凰网"
+            android:textSize="20sp"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/colorBlue"
+            android:layout_toEndOf="@+id/webSites_FengHuang"
+            android:layout_marginStart="50dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/webSites_renmin"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:src="@mipmap/renmin_logo"
+            android:background="@color/colorPrimary"/>
+        <Button
+            android:id="@+id/webSites_renmin_button"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@color/colorWhite"
+            android:text="人民网"
+            android:textSize="20sp"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/colorBlue"
+            android:layout_toEndOf="@+id/webSites_renmin"
+            android:layout_marginStart="60dp"
+            android:layout_toRightOf="@+id/webSites_renmin" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/webSites_zgxinwen"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:src="@mipmap/zgxww_logo"/>
+        <Button
+            android:id="@+id/webSites_zgxinwen_button"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@color/colorWhite"
+            android:text="中国新闻网"
+            android:textSize="20sp"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/colorBlue"
+            android:layout_toEndOf="@+id/webSites_zgxinwen"
+            android:layout_marginStart="80dp"
+            android:layout_toRightOf="@+id/webSites_zgxinwen" />
+    </RelativeLayout>
+
+
+
+</LinearLayout>
